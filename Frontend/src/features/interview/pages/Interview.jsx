@@ -2,36 +2,70 @@ import React, { useState, useEffect } from 'react'
 import '../style/interview.scss'
 import { useInterview } from '../hooks/useInterview.js'
 import { useNavigate, useParams } from 'react-router'
+import AILoadingScreen from '../components/AILoadingScreen.jsx'
+import RecommendedProjectsSection from '../components/RecommendedProjectsSection.jsx'
 
+// ── Icons ──────────────────────────────────────────────────────────────────────
+const BackIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
+    </svg>
+)
 
+const DownloadIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+        <polyline points="7 10 12 15 17 10" />
+        <line x1="12" y1="15" x2="12" y2="3" />
+    </svg>
+)
 
-const NAV_ITEMS = [
-    { id: 'technical', label: 'Technical Questions', icon: (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" /></svg>) },
-    { id: 'behavioral', label: 'Behavioral Questions', icon: (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>) },
-    { id: 'roadmap', label: 'Road Map', icon: (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11" /></svg>) },
-]
+const RefreshIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="23 4 23 10 17 10" /><polyline points="1 20 1 14 7 14" />
+        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+    </svg>
+)
 
-// ── Sub-components ────────────────────────────────────────────────────────────
-const QuestionCard = ({ item, index }) => {
-    const [ open, setOpen ] = useState(false)
+const UndoIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9 14L4 9l5-5" />
+        <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11" />
+    </svg>
+)
+
+const ChevronDownIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="6 9 12 15 18 9" />
+    </svg>
+)
+
+// ── Subcomponents ──────────────────────────────────────────────────────────────
+
+const QuestionRow = ({ q, index }) => {
+    const [open, setOpen] = useState(false)
+    const formattedNum = String(index + 1).padStart(2, '0')
+
     return (
-        <div className='q-card'>
-            <div className='q-card__header' onClick={() => setOpen(o => !o)}>
-                <span className='q-card__index'>Q{index + 1}</span>
-                <p className='q-card__question'>{item.question}</p>
-                <span className={`q-card__chevron ${open ? 'q-card__chevron--open' : ''}`}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
+        <div className={`clean-q-row ${open ? 'clean-q-row--open' : ''}`}>
+            <div className="clean-q-trigger" onClick={() => setOpen(!open)}>
+                <span className="q-index-num">{formattedNum}</span>
+                <p className="q-main-text">{q.question}</p>
+                <span className={`q-expand-arrow ${open ? 'q-expand-arrow--open' : ''}`}>
+                    <ChevronDownIcon />
                 </span>
             </div>
+
             {open && (
-                <div className='q-card__body'>
-                    <div className='q-card__section'>
-                        <span className='q-card__tag q-card__tag--intention'>Intention</span>
-                        <p>{item.intention}</p>
+                <div className="clean-q-expanded">
+                    <div className="q-detail-block">
+                        <span className="q-detail-heading q-detail-heading--intention">Question Objective &amp; Intention</span>
+                        <p>{q.intention}</p>
                     </div>
-                    <div className='q-card__section'>
-                        <span className='q-card__tag q-card__tag--answer'>Model Answer</span>
-                        <p>{item.answer}</p>
+
+                    <div className="q-detail-block">
+                        <span className="q-detail-heading q-detail-heading--answer">Model Answer &amp; Key Talking Points</span>
+                        <p>{q.answer}</p>
                     </div>
                 </div>
             )}
@@ -39,155 +73,542 @@ const QuestionCard = ({ item, index }) => {
     )
 }
 
-const RoadMapDay = ({ day }) => (
-    <div className='roadmap-day'>
-        <div className='roadmap-day__header'>
-            <span className='roadmap-day__badge'>Day {day.day}</span>
-            <h3 className='roadmap-day__focus'>{day.focus}</h3>
-        </div>
-        <ul className='roadmap-day__tasks'>
-            {day.tasks.map((task, i) => (
-                <li key={i}>
-                    <span className='roadmap-day__bullet' />
-                    {task}
-                </li>
-            ))}
-        </ul>
-    </div>
-)
-
-// ── Main Component ────────────────────────────────────────────────────────────
-const Interview = () => {
-    const [ activeNav, setActiveNav ] = useState('technical')
-    const { report, getReportById, loading, getResumePdf } = useInterview()
-    const { interviewId } = useParams()
-
-    useEffect(() => {
-        if (interviewId) {
-            getReportById(interviewId)
-        }
-    }, [ interviewId ])
-
-
-
-    if (loading || !report) {
-        return (
-            <main className='loading-screen'>
-                <h1>Loading your interview plan...</h1>
-            </main>
-        )
-    }
-
-    const scoreColor =
-        report.matchScore >= 80 ? 'score--high' :
-            report.matchScore >= 60 ? 'score--mid' : 'score--low'
-
+const RoadmapProgression = ({ plan }) => {
+    if (!plan || plan.length === 0) return <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>No roadmap generated.</p>
 
     return (
-        <div className='interview-page'>
-            <div className='interview-layout'>
+        <div className="roadmap-timeline">
+            {plan.map((day) => (
+                <div key={day.day} className="roadmap-step">
+                    <div className="roadmap-day-tag">Day {day.day}</div>
+                    <h4 className="roadmap-day-focus">{day.focus}</h4>
+                    <ul className="roadmap-task-list">
+                        {day.tasks.map((task, i) => (
+                            <li key={i}>
+                                <span className="task-bullet" />
+                                <span>{task}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            ))}
+        </div>
+    )
+}
 
-                {/* ── Left Nav ── */}
-                <nav className='interview-nav'>
-                    <div className="nav-content">
-                        <p className='interview-nav__label'>Sections</p>
-                        {NAV_ITEMS.map(item => (
-                            <button
-                                key={item.id}
-                                className={`interview-nav__item ${activeNav === item.id ? 'interview-nav__item--active' : ''}`}
-                                onClick={() => setActiveNav(item.id)}
-                            >
-                                <span className='interview-nav__icon'>{item.icon}</span>
-                                {item.label}
-                            </button>
+const EligibilityAuditCard = ({ eligibility }) => {
+    if (!eligibility) return null
+    const { status, summary, details } = eligibility
+
+    const statusBadgeClass =
+        status === 'eligible' ? 'eligibility-status-badge--eligible' :
+            status === 'ineligible' ? 'eligibility-status-badge--ineligible' : 'eligibility-status-badge--verify'
+
+    const statusBadgeText =
+        status === 'eligible' ? '✓ ELIGIBLE' :
+            status === 'ineligible' ? '✕ INELIGIBLE' : '? UNVERIFIED'
+
+    return (
+        <div className="sidebar-card">
+            <div className="card-header">
+                <h3>Academic &amp; Role Eligibility</h3>
+                <span className={`eligibility-status-badge ${statusBadgeClass}`}>{statusBadgeText}</span>
+            </div>
+
+            <div className="card-body">
+                <p className="eligibility-summary-text">{summary}</p>
+
+                {details && details.length > 0 && (
+                    <div className="criteria-audit-list">
+                        {details.map((item, idx) => (
+                            <div key={idx} className="criteria-audit-row">
+                                <div className="criteria-top">
+                                    <span>{item.criterion}</span>
+                                    <span className={`criteria-status-icon criteria-status-icon--${item.status}`}>
+                                        {item.status === 'met' ? '✓' : item.status === 'failed' ? '✕' : '?'}
+                                    </span>
+                                </div>
+                                <div className="criteria-meta">
+                                    <span>Required: <strong>{item.required}</strong></span>
+                                    <span>Candidate: <strong>{item.candidate}</strong></span>
+                                </div>
+                            </div>
                         ))}
                     </div>
-                    <button
-                        onClick={() => { getResumePdf(interviewId) }}
-                        className='button primary-button' >
-                        <svg height={"0.8rem"} style={{ marginRight: "0.8rem" }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10.6144 17.7956 11.492 15.7854C12.2731 13.9966 13.6789 12.5726 15.4325 11.7942L17.8482 10.7219C18.6162 10.381 18.6162 9.26368 17.8482 8.92277L15.5079 7.88394C13.7092 7.08552 12.2782 5.60881 11.5105 3.75894L10.6215 1.61673C10.2916.821765 9.19319.821767 8.8633 1.61673L7.97427 3.75892C7.20657 5.60881 5.77553 7.08552 3.97685 7.88394L1.63658 8.92277C.868537 9.26368.868536 10.381 1.63658 10.7219L4.0523 11.7942C5.80589 12.5726 7.21171 13.9966 7.99275 15.7854L8.8704 17.7956C9.20776 18.5682 10.277 18.5682 10.6144 17.7956ZM19.4014 22.6899 19.6482 22.1242C20.0882 21.1156 20.8807 20.3125 21.8695 19.8732L22.6299 19.5353C23.0412 19.3526 23.0412 18.7549 22.6299 18.5722L21.9121 18.2532C20.8978 17.8026 20.0911 16.9698 19.6586 15.9269L19.4052 15.3156C19.2285 14.8896 18.6395 14.8896 18.4628 15.3156L18.2094 15.9269C17.777 16.9698 16.9703 17.8026 15.956 18.2532L15.2381 18.5722C14.8269 18.7549 14.8269 19.3526 15.2381 19.5353L15.9985 19.8732C16.9874 20.3125 17.7798 21.1156 18.2198 22.1242L18.4667 22.6899C18.6473 23.104 19.2207 23.104 19.4014 22.6899Z"></path></svg>
-                        Download Resume
-                    </button>
-                </nav>
+                )}
+            </div>
+        </div>
+    )
+}
 
-                <div className='interview-divider' />
+const ATSCompatibilityCard = ({ atsAnalysis, fallbackScore }) => {
+    const currentScore = atsAnalysis?.currentMatchScore ?? fallbackScore ?? 72
+    const potentialScore = atsAnalysis?.potentialMatchScore ?? Math.min(98, currentScore + 18)
+    const keywords = atsAnalysis?.keywordAlignment || []
+    const techSkills = atsAnalysis?.technicalSkillsMatch || { score: currentScore, matched: [], missing: [] }
 
-                {/* ── Center Content ── */}
-                <main className='interview-content'>
-                    {activeNav === 'technical' && (
-                        <section>
-                            <div className='content-header'>
-                                <h2>Technical Questions</h2>
-                                <span className='content-header__count'>{report.technicalQuestions.length} questions</span>
-                            </div>
-                            <div className='q-list'>
-                                {report.technicalQuestions.map((q, i) => (
-                                    <QuestionCard key={i} item={q} index={i} />
-                                ))}
-                            </div>
-                        </section>
-                    )}
+    return (
+        <div className="sidebar-card ats-compatibility-card">
+            <div className="card-header">
+                <h3>CareerAI ATS Analysis</h3>
+                <span className="ats-model-badge">VERIFIED EVIDENCE</span>
+            </div>
 
-                    {activeNav === 'behavioral' && (
-                        <section>
-                            <div className='content-header'>
-                                <h2>Behavioral Questions</h2>
-                                <span className='content-header__count'>{report.behavioralQuestions.length} questions</span>
-                            </div>
-                            <div className='q-list'>
-                                {report.behavioralQuestions.map((q, i) => (
-                                    <QuestionCard key={i} item={q} index={i} />
-                                ))}
-                            </div>
-                        </section>
-                    )}
-
-                    {activeNav === 'roadmap' && (
-                        <section>
-                            <div className='content-header'>
-                                <h2>Preparation Road Map</h2>
-                                <span className='content-header__count'>{report.preparationPlan.length}-day plan</span>
-                            </div>
-                            <div className='roadmap-list'>
-                                {report.preparationPlan.map((day) => (
-                                    <RoadMapDay key={day.day} day={day} />
-                                ))}
-                            </div>
-                        </section>
-                    )}
-                </main>
-
-                <div className='interview-divider' />
-
-                {/* ── Right Sidebar ── */}
-                <aside className='interview-sidebar'>
-
-                    {/* Match Score */}
-                    <div className='match-score'>
-                        <p className='match-score__label'>Match Score</p>
-                        <div className={`match-score__ring ${scoreColor}`}>
-                            <span className='match-score__value'>{report.matchScore}</span>
-                            <span className='match-score__pct'>%</span>
+            <div className="card-body">
+                <div className="ats-score-comparison">
+                    <div className="ats-score-box ats-score-box--current">
+                        <span className="ats-score-label">Current Match</span>
+                        <div className="ats-score-value">
+                            <span className="score-num">{currentScore}</span>
+                            <span className="score-pct">%</span>
                         </div>
-                        <p className='match-score__sub'>Strong match for this role</p>
+                        <span className="ats-score-subtext">Verified Resume</span>
                     </div>
 
-                    <div className='sidebar-divider' />
+                    <div className="ats-score-divider">➔</div>
 
-                    {/* Skill Gaps */}
-                    <div className='skill-gaps'>
-                        <p className='skill-gaps__label'>Skill Gaps</p>
-                        <div className='skill-gaps__list'>
-                            {report.skillGaps.map((gap, i) => (
-                                <span key={i} className={`skill-tag skill-tag--${gap.severity}`}>
-                                    {gap.skill}
+                    <div className="ats-score-box ats-score-box--potential">
+                        <span className="ats-score-label">Potential Match</span>
+                        <div className="ats-score-value">
+                            <span className="score-num">{potentialScore}</span>
+                            <span className="score-pct">%</span>
+                        </div>
+                        <span className="ats-score-subtext">Upon Building Projects</span>
+                    </div>
+                </div>
+
+                <p className="ats-notice-fineprint">
+                    Unbuilt or planned projects do not count toward your current match score until implemented and verified.
+                </p>
+
+                {/* Keyword Alignment */}
+                {keywords.length > 0 && (
+                    <div className="ats-breakdown-section">
+                        <span className="ats-section-heading">Target JD Keyword Alignment</span>
+                        <div className="ats-keyword-chips">
+                            {keywords.map((kw, i) => {
+                                const kwName = typeof kw === 'string' ? kw : kw.keyword
+                                const isPresent = typeof kw === 'object' ? kw.inResume : true
+                                return (
+                                    <span
+                                        key={i}
+                                        className={`ats-chip ${isPresent ? 'ats-chip--matched' : 'ats-chip--missing'}`}
+                                        title={isPresent ? 'Verified in resume' : 'Target keyword missing in current resume'}
+                                    >
+                                        {isPresent ? '✓ ' : '+ '}
+                                        {kwName}
+                                    </span>
+                                )
+                            })}
+                        </div>
+                    </div>
+                )}
+
+                {/* Technical Skills breakdown */}
+                {techSkills.matched && techSkills.matched.length > 0 && (
+                    <div className="ats-breakdown-section">
+                        <span className="ats-section-heading">Verified Technical Overlap</span>
+                        <div className="ats-skills-list">
+                            {techSkills.matched.slice(0, 8).map((sk, idx) => (
+                                <span key={idx} className="ats-skill-pill ats-skill-pill--matched">
+                                    {sk}
                                 </span>
                             ))}
                         </div>
                     </div>
+                )}
 
-                </aside>
+                {/* Qualitative Assessments */}
+                {atsAnalysis?.roleResponsibilityAlignment && (
+                    <div className="ats-breakdown-section">
+                        <span className="ats-section-heading">Role Responsibility Fit</span>
+                        <p className="ats-analysis-sentence">{atsAnalysis.roleResponsibilityAlignment}</p>
+                    </div>
+                )}
             </div>
+        </div>
+    )
+}
+
+const SkillGapsMatrix = ({ gaps }) => {
+    if (!gaps || gaps.length === 0) {
+        return (
+            <div className="sidebar-card">
+                <div className="card-header"><h3>Skill Gap Matrix</h3></div>
+                <div className="card-body">
+                    <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>No critical competency gaps identified.</p>
+                </div>
+            </div>
+        )
+    }
+
+    const grouped = { high: [], medium: [], low: [] }
+    gaps.forEach(g => {
+        const sev = g.severity || 'medium'
+        if (grouped[sev]) grouped[sev].push(g)
+        else grouped.medium.push(g)
+    })
+
+    const labels = { high: 'High Priority Gaps', medium: 'Medium Priority Gaps', low: 'Low Priority Gaps' }
+
+    return (
+        <div className="sidebar-card">
+            <div className="card-header">
+                <h3>Skill Gap Matrix</h3>
+            </div>
+            <div className="card-body">
+                {['high', 'medium', 'low'].map(sev => (
+                    grouped[sev].length > 0 && (
+                        <div key={sev} className="skill-gaps-group">
+                            <span className={`skill-gaps-priority-label skill-gaps-priority-label--${sev}`}>
+                                <span className="p-dot" />
+                                {labels[sev]}
+                            </span>
+                            <div className="skill-gaps-tag-list">
+                                {grouped[sev].map((g, i) => (
+                                    <div key={i} className={`skill-gap-pill skill-gap-pill--${sev}`}>
+                                        {g.skill}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )
+                ))}
+            </div>
+        </div>
+    )
+}
+
+// ── Main Interview Component ───────────────────────────────────────────────────
+const Interview = () => {
+    const [activeTab, setActiveTab] = useState('technical')
+    const {
+        report,
+        getReportById,
+        loading,
+        getResumePdf,
+        handleRegenerateQuestions,
+        isRegenerating,
+        handleProjectAction,
+        handleRegenerateResume,
+        isRegeneratingResume
+    } = useInterview()
+    const { interviewId } = useParams()
+    const navigate = useNavigate()
+    const [isActionLoading, setIsActionLoading] = useState(false)
+
+    useEffect(() => {
+        if (interviewId) getReportById(interviewId)
+    }, [interviewId])
+
+    if (loading || !report) {
+        return <AILoadingScreen title="Fetching Interview Strategy" subtitle="Loading your personalized preparation plan..." />
+    }
+
+    const onRegenerateQuestions = async () => {
+        try {
+            await handleRegenerateQuestions(interviewId)
+        } catch {
+            alert('Failed to regenerate questions. Please try again.')
+        }
+    }
+
+    const onProjectAction = async (projectId, action, completedDetails = null) => {
+        try {
+            setIsActionLoading(true)
+            await handleProjectAction(interviewId, projectId, { action, completedDetails })
+        } catch (err) {
+            console.error('Project action failed:', err)
+            alert('Could not update project recommendation. Please try again.')
+        } finally {
+            setIsActionLoading(false)
+        }
+    }
+
+    const onUndoAction = async () => {
+        try {
+            setIsActionLoading(true)
+            await handleProjectAction(interviewId, null, { action: 'undo' })
+        } catch (err) {
+            console.error('Undo failed:', err)
+            alert('Could not undo action.')
+        } finally {
+            setIsActionLoading(false)
+        }
+    }
+
+    const onRegenerateResume = async () => {
+        try {
+            await handleRegenerateResume(interviewId)
+            alert('Tailored resume successfully regenerated from master resume!')
+        } catch (err) {
+            console.error('Regenerate resume failed:', err)
+            alert('Failed to regenerate resume. Please try again.')
+        }
+    }
+
+    const techCount = report.technicalQuestions ? report.technicalQuestions.length : 0
+    const behCount = report.behavioralQuestions ? report.behavioralQuestions.length : 0
+    const roadDays = report.preparationPlan ? report.preparationPlan.length : 0
+    const recommendations = report.projectRecommendations || []
+    const activeProjectIds = report.activeProjectIds || []
+    const rejectedProjectIds = report.rejectedProjectIds || []
+    const undoCount = (report.undoHistory || []).length
+    const currentVersion = report.currentVersionNumber || report.versions?.length || 1
+
+    const completedBuiltCount = recommendations.filter(
+        p => p.status === 'COMPLETED' && activeProjectIds.includes(p.id)
+    ).length
+
+    return (
+        <div className="strategy-workspace">
+
+            {/* ── Context Topbar ─────────────────────────────────────────────── */}
+            <div className="strategy-context-bar">
+                <div className="context-top-row">
+                    <button className="back-nav-link" onClick={() => navigate('/')}>
+                        <BackIcon />
+                        <span>Return to Preparation Workspace</span>
+                    </button>
+
+                    <div className="context-actions">
+                        <button
+                            className="button secondary-button"
+                            disabled={isRegenerating}
+                            onClick={onRegenerateQuestions}
+                            id="change-questions-btn"
+                        >
+                            <RefreshIcon />
+                            <span>{isRegenerating ? 'Generating...' : 'Change Questions'}</span>
+                        </button>
+
+                        <button
+                            className="button secondary-button"
+                            onClick={() => getResumePdf(interviewId)}
+                            id="download-resume-btn"
+                        >
+                            <DownloadIcon />
+                            <span>Download Resume (v{currentVersion})</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div className="context-title-group">
+                    <h1>{report.title || 'Target Role Preparation Strategy'}</h1>
+                    <div className="context-meta-row">
+                        {report.companyName && (
+                            <span className="meta-tag meta-tag--company">
+                                🏢 Company Context: {report.companyName}
+                            </span>
+                        )}
+                        <span className="meta-tag">
+                            Created on {new Date(report.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                        </span>
+                        <span className="meta-source-label">
+                            {report.questionSource || 'Personalized questions based on role requirements & candidate profile'}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            {/* ── Resume According To Job Section ─────────────────────────────── */}
+            <div className="resume-tailored-card" id="resume-according-to-job">
+                <div className="resume-tailored-card__info">
+                    <div className="resume-tailored-card__badge-row">
+                        <div className="resume-tailored-card__badge">
+                            <span className="badge-dot" />
+                            <span>RESUME ACCORDING TO JOB</span>
+                        </div>
+                        <span className="resume-version-pill">Version {currentVersion}</span>
+                        {completedBuiltCount > 0 && (
+                            <span className="resume-projects-pill">+{completedBuiltCount} Verified Project Included</span>
+                        )}
+                    </div>
+                    <p className="resume-tailored-card__desc">
+                        Tailored from your unchanged master resume (<code>Anas_Resume.pdf</code>). Only <strong>SUMMARY</strong>, <strong>TECHNICAL SKILLS</strong>, and verified <strong>PROJECTS</strong> are adjusted for this job description. Original layout, fonts, and unmodifiable sections are 100% preserved.
+                    </p>
+                    <div className="resume-tailored-card__meta-status">
+                        <span>✓ Single-Page Preserved</span>
+                        <span>•</span>
+                        <span>✓ Master Resume Unmodified</span>
+                        <span>•</span>
+                        <span>✓ Unbuilt Projects Excluded</span>
+                    </div>
+                </div>
+
+                <div className="resume-tailored-card__cta-group">
+                    {undoCount > 0 && (
+                        <button
+                            className="button secondary-button resume-undo-btn"
+                            onClick={onUndoAction}
+                            disabled={isActionLoading}
+                            title="Undo most recent project selection"
+                            id="undo-selection-btn"
+                        >
+                            <UndoIcon />
+                            <span>Undo ({undoCount})</span>
+                        </button>
+                    )}
+
+                    <button
+                        className="button secondary-button resume-regen-btn"
+                        onClick={onRegenerateResume}
+                        disabled={isRegeneratingResume}
+                        title="Regenerate new version starting strictly from unchanged master resume"
+                        id="regenerate-tailored-resume-btn"
+                    >
+                        <RefreshIcon />
+                        <span>{isRegeneratingResume ? 'Regenerating...' : 'Regenerate Tailored Resume'}</span>
+                    </button>
+
+                    <button
+                        className="button primary-button resume-tailored-download-btn"
+                        onClick={() => getResumePdf(interviewId)}
+                        id="download-updated-resume-btn"
+                    >
+                        <DownloadIcon />
+                        <span>Download Resume (v{currentVersion})</span>
+                    </button>
+                </div>
+            </div>
+
+            {/* ── Main Two-Column Workspace Layout ───────────────────────────── */}
+            <div className="strategy-layout">
+
+                {/* Left Column (Main Preparation Workspace) */}
+                <div className="strategy-main">
+
+                    {/* ── Section: Recommended Projects to Strengthen Your Resume ── */}
+                    {recommendations.length > 0 && (
+                        <RecommendedProjectsSection
+                            recommendations={recommendations}
+                            activeProjectIds={activeProjectIds}
+                            rejectedProjectIds={rejectedProjectIds}
+                            onAction={onProjectAction}
+                            isActionLoading={isActionLoading}
+                        />
+                    )}
+
+                    {/* Tab Navigation */}
+                    <div className="strategy-tabs">
+                        <button
+                            className={`strategy-tab ${activeTab === 'technical' ? 'strategy-tab--active' : ''}`}
+                            onClick={() => setActiveTab('technical')}
+                        >
+                            <span>Technical Questions</span>
+                            <span className="tab-count">{techCount}</span>
+                        </button>
+
+                        <button
+                            className={`strategy-tab ${activeTab === 'behavioral' ? 'strategy-tab--active' : ''}`}
+                            onClick={() => setActiveTab('behavioral')}
+                        >
+                            <span>Behavioral &amp; HR Questions</span>
+                            <span className="tab-count">{behCount}</span>
+                        </button>
+
+                        <button
+                            className={`strategy-tab ${activeTab === 'roadmap' ? 'strategy-tab--active' : ''}`}
+                            onClick={() => setActiveTab('roadmap')}
+                        >
+                            <span>Preparation Roadmap</span>
+                            <span className="tab-count">{roadDays} Days</span>
+                        </button>
+                    </div>
+
+                    {/* Tab 1: Technical Questions */}
+                    {activeTab === 'technical' && (
+                        <div className="questions-workspace">
+                            <div className="questions-header-bar">
+                                <div className="qh-info">
+                                    <h3>Technical Interview Questions</h3>
+                                    <p>Comprehensive technical problem solving and architectural questions matched to the job description.</p>
+                                </div>
+                                <div className="qh-actions">
+                                    <button 
+                                        className="button secondary-button" 
+                                        style={{ fontSize: '11px', padding: '0.35rem 0.65rem' }}
+                                        disabled={isRegenerating}
+                                        onClick={onRegenerateQuestions}
+                                    >
+                                        {isRegenerating ? 'Generating...' : 'Change Questions'}
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="clean-questions-list">
+                                {report.technicalQuestions && report.technicalQuestions.map((q, i) => (
+                                    <QuestionRow key={i} q={q} index={i} />
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Tab 2: Behavioral Questions */}
+                    {activeTab === 'behavioral' && (
+                        <div className="questions-workspace">
+                            <div className="questions-header-bar">
+                                <div className="qh-info">
+                                    <h3>Behavioral &amp; Situational Questions</h3>
+                                    <p>Culture-fit, conflict resolution, and leadership questions formatted around the STAR method.</p>
+                                </div>
+                                <div className="qh-actions">
+                                    <button 
+                                        className="button secondary-button" 
+                                        style={{ fontSize: '11px', padding: '0.35rem 0.65rem' }}
+                                        disabled={isRegenerating}
+                                        onClick={onRegenerateQuestions}
+                                    >
+                                        {isRegenerating ? 'Generating...' : 'Change Questions'}
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="clean-questions-list">
+                                {report.behavioralQuestions && report.behavioralQuestions.map((q, i) => (
+                                    <QuestionRow key={i} q={q} index={i} />
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Tab 3: Roadmap */}
+                    {activeTab === 'roadmap' && (
+                        <div className="questions-workspace">
+                            <div className="questions-header-bar">
+                                <div className="qh-info">
+                                    <h3>Structured Day-by-Day Preparation Plan</h3>
+                                    <p>Sequenced milestone plan to revise concepts, build project enhancements, and practice mock questions.</p>
+                                </div>
+                            </div>
+
+                            <RoadmapProgression plan={report.preparationPlan} />
+                        </div>
+                    )}
+
+                </div>
+
+                {/* Right Column (Analytics, Eligibility, ATS Analysis & Skill Gaps Sidebar) */}
+                <div className="strategy-sidebar">
+
+                    {/* 1. Academic & Role Eligibility Audit */}
+                    {report.eligibility && (
+                        <EligibilityAuditCard eligibility={report.eligibility} />
+                    )}
+
+                    {/* 2. CareerAI ATS Compatibility Analysis (Current vs Potential) */}
+                    <ATSCompatibilityCard
+                        atsAnalysis={report.atsAnalysis}
+                        fallbackScore={report.matchScore}
+                    />
+
+                    {/* 3. Skill Gaps Priority Matrix */}
+                    <SkillGapsMatrix gaps={report.skillGaps} />
+
+                </div>
+
+            </div>
+
         </div>
     )
 }

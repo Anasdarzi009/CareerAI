@@ -1,2 +1,12 @@
 /.env
 /node_modules
+/uploads/resumes/*
+!/uploads/resumes/.gitkeep
+/uploads/tailored-resumes/*
+!/uploads/tailored-resumes/.gitkeep
+/uploads/master-resumes/*
+!/uploads/master-resumes/.gitkeep
+/uploads/*.pdf
+/uploads/*.docx
+/scratch
+.DS_Store

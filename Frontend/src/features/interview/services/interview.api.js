@@ -1,7 +1,8 @@
 import axios from "axios";
+import { API_BASE_URL } from "../../../config/api.config";
 
 const api = axios.create({
-    baseURL: "http://localhost:3000",
+    baseURL: API_BASE_URL,
     withCredentials: true,
 })
 
@@ -48,6 +49,14 @@ export const getAllInterviewReports = async () => {
 
 
 /**
+ * @description Service to regenerate technical and behavioral questions for an existing interview report.
+ */
+export const regenerateQuestions = async (interviewId) => {
+    const response = await api.post(`/api/interview/${interviewId}/regenerate-questions`)
+    return response.data
+}
+
+/**
  * @description Service to generate resume pdf based on user self description, resume content and job description.
  */
 export const generateResumePdf = async ({ interviewReportId }) => {
@@ -55,5 +64,47 @@ export const generateResumePdf = async ({ interviewReportId }) => {
         responseType: "blob"
     })
 
+    return {
+        data: response.data,
+        headers: response.headers
+    }
+}
+
+/**
+ * @description Get user's persistent master resume
+ */
+export const getMasterResume = async () => {
+    const response = await api.get("/api/interview/master-resume")
+    return response.data
+}
+
+/**
+ * @description Replace master resume intentionally
+ */
+export const replaceMasterResume = async (file) => {
+    const formData = new FormData()
+    formData.append("resume", file)
+    const response = await api.post("/api/interview/master-resume/replace", formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+    })
+    return response.data
+}
+
+/**
+ * @description Execute project recommendation action: add, reject, mark_completed, undo
+ */
+export const handleProjectRecommendationAction = async (interviewId, projectId, { action, completedDetails }) => {
+    const response = await api.post(`/api/interview/${interviewId}/recommendations/${projectId}/action`, {
+        action,
+        completedDetails
+    })
+    return response.data
+}
+
+/**
+ * @description Regenerate tailored resume version starting from master resume
+ */
+export const regenerateTailoredResume = async (interviewId) => {
+    const response = await api.post(`/api/interview/${interviewId}/regenerate-tailored-resume`)
     return response.data
 }

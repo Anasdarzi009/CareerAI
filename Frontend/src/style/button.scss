@@ -1,20 +1,101 @@
-.button{
-
+/* ── Base Button ─────────────────────────────────────────────────────────────── */
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
     border: none;
     outline: none;
-    padding-inline: 1.5rem;
-    padding-block: 0.75rem;
-    border-radius: 1rem;
+    border-radius: var(--radius-md);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 500;
     cursor: pointer;
+    transition: background-color var(--transition-base),
+        border-color var(--transition-base),
+        color var(--transition-base),
+        opacity var(--transition-base),
+        transform var(--transition-fast);
+    user-select: none;
+    white-space: nowrap;
+    padding: 0.5rem 1rem;
+    line-height: 1;
+    min-height: 38px;
 
-    transition: all 0.3s ease-in-out;
-
-    &.primary-button{
-        background-color: #e1034d;
-        color: white;
+    @media (max-width: 640px) {
+        min-height: 44px;
+        padding: 0.55rem 0.9rem;
     }
 
-    &:active{
-        transform: scale(0.9);
+    /* Wrap text on very narrow screens if button has long text */
+    @media (max-width: 360px) {
+        white-space: normal;
+        text-align: center;
+    }
+
+    &:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+    /* Primary — solid accent, used for the main CTA only */
+    &.primary-button {
+        background-color: var(--accent);
+        color: #ffffff;
+        border: 1px solid transparent;
+
+        &:hover {
+            background-color: #d4224f;
+        }
+
+        &:active {
+            transform: scale(0.98);
+        }
+    }
+
+    /* Secondary — outlined, for supporting actions */
+    &.secondary-button {
+        background-color: transparent;
+        color: var(--text-secondary);
+        border: 1px solid var(--border-default);
+
+        &:hover {
+            background-color: var(--bg-elevated);
+            border-color: var(--border-strong);
+            color: var(--text-primary);
+        }
+
+        &:active {
+            transform: scale(0.98);
+        }
+    }
+
+    /* Tertiary — ghost/text, for low-emphasis actions */
+    &.tertiary-button {
+        background-color: transparent;
+        color: var(--text-secondary);
+        border: 1px solid transparent;
+        padding: 0.4rem 0.65rem;
+
+        &:hover {
+            background-color: var(--bg-elevated);
+            color: var(--text-primary);
+        }
+
+        &:active {
+            transform: scale(0.98);
+        }
+    }
+
+    /* Danger — destructive actions */
+    &.danger-button {
+        background-color: transparent;
+        color: var(--danger);
+        border: 1px solid var(--danger-border);
+
+        &:hover {
+            background-color: var(--danger-dim);
+        }
     }
 }

@@ -1,0 +1,1410 @@
+/* ── CareerAI Mock Placement Drive Module Styling ───────────────────────── */
+
+.drives-container {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    animation: drivesFadeIn 0.25s ease-out;
+}
+
+.drives-runner-container {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    min-height: calc(100vh - 100px);
+    animation: drivesFadeIn 0.25s ease-out;
+}
+
+@keyframes drivesFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ── Header ───────────────────────────────────────────────────────────── */
+.drives-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color, #27272a);
+
+    &__top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+    }
+
+    &__title-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    &__badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #a78bfa;
+        background: rgba(139, 92, 246, 0.1);
+        border: 1px solid rgba(139, 92, 246, 0.25);
+        padding: 0.25rem 0.65rem;
+        border-radius: 9999px;
+        width: fit-content;
+    }
+
+    &__title {
+        font-size: 1.75rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: #f4f4f5;
+        margin: 0;
+    }
+
+    &__subtitle {
+        font-size: 0.925rem;
+        color: #a1a1aa;
+        margin: 0;
+        max-width: 720px;
+        line-height: 1.5;
+    }
+
+    &__tabs {
+        display: flex;
+        gap: 0.5rem;
+        overflow-x: auto;
+    }
+}
+
+.drives-badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #8b5cf6;
+    box-shadow: 0 0 8px #8b5cf6;
+}
+
+.drives-mode-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.785rem;
+    color: #c084fc;
+    background: rgba(192, 132, 252, 0.08);
+    border: 1px solid rgba(192, 132, 252, 0.25);
+    padding: 0.4rem 0.75rem;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+/* ── Tabs ─────────────────────────────────────────────────────────────── */
+.drives-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.15rem;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: #a1a1aa;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+
+    &:hover {
+        color: #f4f4f5;
+        background: rgba(255, 255, 255, 0.04);
+    }
+
+    &--active {
+        color: #ffffff;
+        background: #18181b;
+        border-color: #3f3f46;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    }
+}
+
+/* ── Stats Grid ───────────────────────────────────────────────────────── */
+.drives-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+}
+
+.drives-stat-card {
+    background: #121215;
+    border: 1px solid #27272a;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    &__top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #71717a;
+    }
+
+    &__icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.85rem;
+
+        &--cleared {
+            background: rgba(16, 185, 129, 0.12);
+            color: #34d399;
+        }
+
+        &--rate {
+            background: rgba(139, 92, 246, 0.12);
+            color: #c084fc;
+        }
+
+        &--score {
+            background: rgba(245, 158, 11, 0.12);
+            color: #fbbf24;
+        }
+    }
+
+    &__value {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #f4f4f5;
+        line-height: 1.1;
+    }
+
+    &__sub {
+        font-size: 0.85rem;
+        color: #a1a1aa;
+        font-weight: 500;
+        margin-left: 0.5rem;
+    }
+
+    &__unit {
+        font-size: 1rem;
+        color: #71717a;
+        margin-left: 0.25rem;
+    }
+}
+
+.drives-unassessed-banner {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    background: #141418;
+    border: 1px dashed #3f3f46;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+
+    &__icon {
+        color: #a1a1aa;
+        flex-shrink: 0;
+    }
+
+    &__title {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #f4f4f5;
+        margin: 0 0 0.25rem 0;
+    }
+
+    &__desc {
+        font-size: 0.825rem;
+        color: #a1a1aa;
+        margin: 0;
+    }
+}
+
+/* ── Resume Banner ────────────────────────────────────────────────────── */
+.drives-resume-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.12) 0%, rgba(37, 99, 235, 0.08) 100%);
+    border: 1px solid rgba(139, 92, 246, 0.35);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+
+    &__info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+
+        h4 {
+            font-size: 1.1rem;
+            color: #f4f4f5;
+            margin: 0;
+        }
+
+        p {
+            font-size: 0.85rem;
+            color: #d4d4d8;
+            margin: 0;
+        }
+    }
+}
+
+.drives-resume-tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #a78bfa;
+    background: rgba(139, 92, 246, 0.2);
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    width: fit-content;
+}
+
+/* ── Template Cards Grid ──────────────────────────────────────────────── */
+.drives-templates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+    gap: 1.5rem;
+}
+
+.drives-template-card {
+    background: #121215;
+    border: 1px solid #27272a;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+
+    &:hover {
+        border-color: #3f3f46;
+        transform: translateY(-2px);
+    }
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__body {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    &__footer {
+        margin-top: auto;
+        padding-top: 1rem;
+        border-top: 1px solid #1f1f23;
+    }
+}
+
+.drives-tier-badge {
+    font-size: 0.725rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+
+    &.drives-tier--product {
+        background: rgba(59, 130, 246, 0.12);
+        color: #60a5fa;
+        border: 1px solid rgba(59, 130, 246, 0.25);
+    }
+
+    &.drives-tier--service {
+        background: rgba(16, 185, 129, 0.12);
+        color: #34d399;
+        border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    &.drives-tier--startup {
+        background: rgba(245, 158, 11, 0.12);
+        color: #fbbf24;
+        border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+}
+
+.drives-template-meta-time {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    color: #71717a;
+}
+
+.drives-company-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #a78bfa;
+}
+
+.drives-template-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #f4f4f5;
+    margin: 0;
+}
+
+.drives-template-role {
+    font-size: 0.825rem;
+    color: #a1a1aa;
+
+    strong {
+        color: #e4e4e7;
+    }
+}
+
+.drives-template-desc {
+    font-size: 0.825rem;
+    color: #71717a;
+    line-height: 1.5;
+    margin: 0.25rem 0 0 0;
+}
+
+.drives-template-rounds-preview {
+    background: #18181b;
+    border: 1px solid #27272a;
+    border-radius: 8px;
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.drives-rounds-preview-title {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #71717a;
+    letter-spacing: 0.05em;
+}
+
+.drives-rounds-preview-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.drives-round-preview-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.775rem;
+    color: #d4d4d8;
+
+    .round-num {
+        font-weight: 700;
+        color: #8b5cf6;
+        min-width: 25px;
+    }
+
+    .round-name {
+        flex: 1;
+    }
+
+    .round-dur {
+        color: #71717a;
+    }
+}
+
+/* ── Buttons ──────────────────────────────────────────────────────────── */
+.drives-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    padding: 0.6rem 1.15rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    border: none;
+    text-decoration: none;
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    &--primary {
+        background: #7c3aed;
+        color: #ffffff;
+
+        &:hover:not(:disabled) {
+            background: #6d28d9;
+        }
+    }
+
+    &--secondary {
+        background: #27272a;
+        color: #f4f4f5;
+
+        &:hover:not(:disabled) {
+            background: #3f3f46;
+        }
+    }
+
+    &--ghost {
+        background: transparent;
+        color: #a1a1aa;
+        border: 1px solid #27272a;
+
+        &:hover:not(:disabled) {
+            color: #f4f4f5;
+            background: #18181b;
+        }
+    }
+
+    &--danger {
+        background: #dc2626;
+        color: #ffffff;
+
+        &:hover:not(:disabled) {
+            background: #b91c1c;
+        }
+    }
+
+    &--sm {
+        padding: 0.4rem 0.85rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* ── Round Navigator ──────────────────────────────────────────────────── */
+.drives-navigator {
+    background: #121215;
+    border: 1px solid #27272a;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+}
+
+.drives-navigator__track {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    gap: 0.75rem;
+}
+
+.drives-nav-step {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    background: #18181b;
+    border: 1px solid #27272a;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &--active {
+        border-color: #8b5cf6;
+        background: #1c192b;
+    }
+
+    &--done {
+        border-left: 3px solid #10b981;
+    }
+
+    &--locked {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    &__indicator {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #27272a;
+        color: #f4f4f5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.8rem;
+        flex-shrink: 0;
+    }
+
+    &--active &__indicator {
+        background: #8b5cf6;
+        color: #ffffff;
+    }
+
+    &--done &__indicator {
+        background: #10b981;
+        color: #ffffff;
+    }
+
+    &__info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        flex: 1;
+    }
+
+    &__title {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #f4f4f5;
+    }
+}
+
+.drives-round-badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+    width: fit-content;
+
+    &--active {
+        background: rgba(139, 92, 246, 0.15);
+        color: #c084fc;
+    }
+
+    &--pass {
+        background: rgba(16, 185, 129, 0.15);
+        color: #34d399;
+    }
+
+    &--review {
+        background: rgba(245, 158, 11, 0.15);
+        color: #fbbf24;
+    }
+
+    &--locked {
+        background: #27272a;
+        color: #71717a;
+    }
+}
+
+/* ── Runner Workspace & Header ────────────────────────────────────────── */
+.drives-runner-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #121215;
+    border: 1px solid #27272a;
+    border-radius: 8px;
+    padding: 0.75rem 1.25rem;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+
+    &__left {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    &__right {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+}
+
+.drives-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.825rem;
+    color: #a1a1aa;
+    text-decoration: none;
+
+    &:hover {
+        color: #f4f4f5;
+    }
+}
+
+.drives-sep {
+    color: #52525b;
+}
+
+.drives-company-tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #a78bfa;
+    background: rgba(139, 92, 246, 0.12);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+}
+
+.drives-header-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #f4f4f5;
+    margin: 0;
+}
+
+.drives-role-badge {
+    font-size: 0.75rem;
+    color: #a1a1aa;
+}
+
+.drives-live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.725rem;
+    color: #34d399;
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    padding: 0.25rem 0.55rem;
+    border-radius: 4px;
+}
+
+.drives-round-workspace {
+    background: #121215;
+    border: 1px solid #27272a;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.drives-runner-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #27272a;
+    margin-bottom: 1.25rem;
+
+    h4 {
+        margin: 0;
+        font-size: 1.15rem;
+        color: #f4f4f5;
+    }
+}
+
+.drives-runner-meta {
+    font-size: 0.8rem;
+    color: #a1a1aa;
+}
+
+/* ── Aptitude Runner (Round 1) ────────────────────────────────────────── */
+.drives-q-pills {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+}
+
+.drives-q-pill {
+    padding: 0.35rem 0.75rem;
+    background: #18181b;
+    border: 1px solid #27272a;
+    border-radius: 6px;
+    color: #a1a1aa;
+    font-size: 0.785rem;
+    font-weight: 600;
+    cursor: pointer;
+
+    &--active {
+        background: #7c3aed;
+        color: #ffffff;
+        border-color: #8b5cf6;
+    }
+
+    &--answered {
+        border-color: #10b981;
+        color: #34d399;
+    }
+}
+
+.drives-q-box {
+    background: #18181b;
+    border: 1px solid #27272a;
+    border-radius: 10px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.drives-q-category-tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #c084fc;
+    background: rgba(192, 132, 252, 0.1);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+}
+
+.drives-q-num {
+    font-size: 0.75rem;
+    color: #71717a;
+}
+
+.drives-q-text {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #f4f4f5;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.drives-options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.drives-option-item {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    background: #121215;
+    border: 1px solid #27272a;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover {
+        border-color: #3f3f46;
+        background: #16161b;
+    }
+
+    &--selected {
+        border-color: #8b5cf6;
+        background: rgba(139, 92, 246, 0.08);
+    }
+}
+
+.drives-option-radio {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #52525b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .drives-radio-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #8b5cf6;
+    }
+}
+
+.drives-option-item--selected .drives-option-radio {
+    border-color: #8b5cf6;
+}
+
+.drives-option-letter {
+    font-weight: 700;
+    color: #71717a;
+    min-width: 20px;
+}
+
+.drives-option-text {
+    font-size: 0.875rem;
+    color: #e4e4e7;
+    line-height: 1.4;
+}
+
+.drives-explanation-box {
+    background: rgba(59, 130, 246, 0.08);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    font-size: 0.825rem;
+    color: #93c5fd;
+    line-height: 1.5;
+}
+
+.drives-runner-bottombar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+}
+
+/* ── Coding Runner (Round 2) ──────────────────────────────────────────── */
+.drives-coding-split {
+    display: flex;
+    gap: 1rem;
+    flex: 1;
+    overflow: hidden;
+    min-height: 540px;
+}
+
+.drives-coding-pane {
+    background: #18181b;
+    border: 1px solid #27272a;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    &--left {
+        flex: 0 0 45%;
+        max-width: 45%;
+        overflow-y: auto;
+    }
+
+    &--right {
+        flex: 1;
+        overflow: hidden;
+    }
+}
+
+.drives-results-tray {
+    border-top: 1px solid #27272a;
+    padding: 0.85rem 1.25rem;
+    background: #141418;
+}
+
+.drives-round-eval-summary {
+    font-size: 0.85rem;
+    color: #34d399;
+    padding: 0.5rem 0;
+}
+
+/* ── Interview Runner (Round 3) ───────────────────────────────────────── */
+.drives-interview-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.drives-interview-card {
+    background: #18181b;
+    border: 1px solid #27272a;
+    border-radius: 10px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    &__top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.drives-interview-question-text {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #f4f4f5;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.drives-interview-textarea {
+    width: 100%;
+    background: #121215;
+    border: 1px solid #27272a;
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+    color: #f4f4f5;
+    font-size: 0.875rem;
+    outline: none;
+    resize: vertical;
+    line-height: 1.5;
+
+    &:focus {
+        border-color: #8b5cf6;
+    }
+}
+
+.drives-interview-wordcount {
+    font-size: 0.75rem;
+    color: #71717a;
+    margin-top: 0.35rem;
+}
+
+.drives-interview-feedback-box {
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.drives-feedback-rating {
+    font-size: 0.8rem;
+    color: #34d399;
+}
+
+.drives-feedback-text {
+    font-size: 0.825rem;
+    color: #d4d4d8;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* ── Placement Dossier View ───────────────────────────────────────────── */
+.drives-dossier {
+    max-width: 960px;
+    margin: 0 auto;
+    background: #121215;
+    border: 1px solid #27272a;
+    border-radius: 14px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.drives-dossier-banner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.75rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #27272a;
+
+    &__top {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+}
+
+.drives-tier-tag {
+    font-size: 0.7rem;
+    color: #71717a;
+    background: #18181b;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+}
+
+.drives-dossier-verdict-pill {
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    padding: 0.45rem 1.25rem;
+    border-radius: 9999px;
+    margin-top: 0.5rem;
+}
+
+.drives-verdict--hire .drives-dossier-verdict-pill {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.drives-verdict--borderline .drives-dossier-verdict-pill {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+.drives-verdict--not-cleared .drives-dossier-verdict-pill {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+.drives-dossier-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #f4f4f5;
+    margin: 0;
+}
+
+.drives-dossier-role {
+    font-size: 0.9rem;
+    color: #a1a1aa;
+
+    strong {
+        color: #f4f4f5;
+    }
+}
+
+.drives-score-circle {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #231d3f 0%, #121215 100%);
+    border: 2px solid #8b5cf6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.75rem;
+
+    .score-num {
+        font-size: 2.75rem;
+        font-weight: 900;
+        color: #c084fc;
+        line-height: 1;
+    }
+
+    .score-label {
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        color: #71717a;
+        margin-top: 0.25rem;
+    }
+}
+
+.drives-dossier-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    &--summary {
+        background: #18181b;
+        border: 1px solid #27272a;
+        border-radius: 10px;
+        padding: 1.25rem 1.5rem;
+    }
+}
+
+.drives-section-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #a1a1aa;
+    margin: 0;
+}
+
+.drives-summary-text {
+    font-size: 0.9rem;
+    color: #d4d4d8;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.drives-rounds-breakdown-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    gap: 1rem;
+}
+
+.drives-round-result-card {
+    background: #18181b;
+    border: 1px solid #27272a;
+    border-radius: 8px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    &.pass {
+        border-left: 3px solid #10b981;
+    }
+
+    &.fail {
+        border-left: 3px solid #ef4444;
+    }
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .round-idx {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #71717a;
+    }
+
+    .round-title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #f4f4f5;
+        margin: 0;
+    }
+
+    .round-score {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #f4f4f5;
+
+        span {
+            font-size: 0.85rem;
+            color: #71717a;
+        }
+    }
+
+    .round-feedback {
+        font-size: 0.785rem;
+        color: #a1a1aa;
+        margin: 0;
+        line-height: 1.4;
+    }
+}
+
+.status-pill {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+
+    &--pass {
+        background: rgba(16, 185, 129, 0.15);
+        color: #34d399;
+    }
+
+    &--fail {
+        background: rgba(239, 68, 68, 0.15);
+        color: #f87171;
+    }
+}
+
+.drives-dossier-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+}
+
+.drives-dossier-card {
+    background: #18181b;
+    border: 1px solid #27272a;
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.drives-card-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin: 0;
+    color: #34d399;
+
+    &--gaps {
+        color: #f87171;
+    }
+}
+
+.drives-list {
+    margin: 0;
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: #e4e4e7;
+
+    &--gaps {
+        color: #fca5a5;
+    }
+}
+
+.drives-empty-text {
+    font-size: 0.8rem;
+    color: #71717a;
+    font-style: italic;
+    margin: 0;
+}
+
+.drives-dossier-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+/* ── History Table ────────────────────────────────────────────────────── */
+.drives-history-table-wrapper {
+    background: #121215;
+    border: 1px solid #27272a;
+    border-radius: 10px;
+    overflow-x: auto;
+}
+
+.drives-history-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+
+    th {
+        text-align: left;
+        padding: 0.75rem 1rem;
+        background: #18181b;
+        color: #71717a;
+        font-weight: 600;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        border-bottom: 1px solid #27272a;
+    }
+
+    td {
+        padding: 0.85rem 1rem;
+        border-bottom: 1px solid #1f1f23;
+        color: #d4d4d8;
+    }
+}
+
+.drives-table-sub {
+    font-size: 0.75rem;
+    color: #71717a;
+}
+
+.drives-table-link {
+    color: #a78bfa;
+    text-decoration: none;
+    font-weight: 600;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.drives-verdict-tag {
+    font-size: 0.725rem;
+    font-weight: 700;
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+
+    &.hire {
+        background: rgba(16, 185, 129, 0.15);
+        color: #34d399;
+    }
+
+    &.borderline {
+        background: rgba(245, 158, 11, 0.15);
+        color: #fbbf24;
+    }
+
+    &.fail {
+        background: rgba(239, 68, 68, 0.15);
+        color: #f87171;
+    }
+}
+
+/* ── Loading, Empty, Alert States ─────────────────────────────────────── */
+.drives-loading-state, .drives-empty-state, .drives-loading-screen, .drives-error-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 1rem;
+    text-align: center;
+    color: #a1a1aa;
+    gap: 0.75rem;
+
+    h3 {
+        margin: 0;
+        color: #f4f4f5;
+    }
+
+    p {
+        margin: 0;
+        max-width: 480px;
+    }
+}
+
+.drives-spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: drivesSpin 0.7s linear infinite;
+
+    &--large {
+        width: 34px;
+        height: 34px;
+        border-width: 3px;
+        border-top-color: #8b5cf6;
+    }
+}
+
+@keyframes drivesSpin {
+    to { transform: rotate(360deg); }
+}
+
+.drives-alert {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+
+    &--error {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        color: #fca5a5;
+    }
+}
+
+/* ── Responsive Rules ─────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+    .drives-coding-split {
+        flex-direction: column;
+    }
+
+    .drives-coding-pane--left {
+        flex: none;
+        max-width: 100%;
+        max-height: 350px;
+    }
+
+    .drives-dossier-two-col {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .drives-header__title {
+        font-size: 1.4rem;
+    }
+
+    .drives-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .drives-runner-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .drives-dossier-actions {
+        flex-direction: column;
+    }
+}

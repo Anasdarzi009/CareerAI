@@ -21,6 +21,14 @@ authRouter.post("/login", authController.loginUserController)
 
 
 /**
+ * @route POST /api/auth/reset-password
+ * @description safely reset user password by email or username
+ * @access Public
+ */
+authRouter.post("/reset-password", authController.resetPasswordController)
+
+
+/**
  * @route GET /api/auth/logout
  * @description clear token from user cookie and add the token in blacklist
  * @access public
@@ -34,6 +42,20 @@ authRouter.get("/logout", authController.logoutUserController)
  * @access private
  */
 authRouter.get("/get-me", authMiddleware.authUser, authController.getMeController)
+
+/**
+ * @route PATCH /api/auth/profile
+ * @description update user profile (username, gender, avatar)
+ * @access private
+ */
+authRouter.patch("/profile", authMiddleware.authUser, authController.updateProfileController)
+
+/**
+ * @route POST /api/auth/change-password
+ * @description change user password
+ * @access private
+ */
+authRouter.post("/change-password", authMiddleware.authUser, authController.changePasswordController)
 
 
 module.exports = authRouter
