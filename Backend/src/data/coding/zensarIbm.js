@@ -556,7 +556,7 @@ const ZENSAR_IBM_CODING = [
     },
     {
         questionId: 'IBM-CODING-003',
-        title: 'Longest Increasing Subsequence Length',
+        title: 'Longest Strictly Increasing Subsequence',
         slug: 'ibm-longest-increasing-subsequence',
         company: 'IBM',
         difficulty: 'Medium',

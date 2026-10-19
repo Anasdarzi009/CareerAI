@@ -600,12 +600,25 @@ async function seedAptitudeQuestions() {
         let upsertedCount = 0;
 
         for (const q of allQuestions) {
-            const query = q.questionId ? { questionId: q.questionId } : { questionText: q.questionText };
-            await AptitudeQuestion.updateOne(
-                query,
-                { $set: q },
-                { upsert: true }
-            );
+            let existing = null;
+            if (q.questionId) {
+                existing = await AptitudeQuestion.findOne({ questionId: q.questionId });
+            }
+            if (!existing && q.questionText) {
+                existing = await AptitudeQuestion.findOne({
+                    questionText: q.questionText,
+                    questionId: { $in: [null, undefined, ''] }
+                });
+            }
+
+            if (existing) {
+                await AptitudeQuestion.updateOne(
+                    { _id: existing._id },
+                    { $set: q }
+                );
+            } else {
+                await AptitudeQuestion.create(q);
+            }
             upsertedCount++;
         }
 

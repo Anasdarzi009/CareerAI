@@ -104,6 +104,7 @@ const codingQuestionSchema = new mongoose.Schema({
         enum: [
             'official_company',
             'candidate_interview_experience',
+            'reported_interview_experience',
             'placement_paper',
             'reputable_placement_resource',
             'pattern_based',

@@ -825,12 +825,23 @@ async function seedCodingQuestions() {
         let upsertedCount = 0;
 
         for (const q of allQuestions) {
-            const query = q.questionId ? { questionId: q.questionId } : { slug: q.slug };
-            await CodingQuestion.updateOne(
-                query,
-                { $set: q },
-                { upsert: true }
-            );
+            const queryConditions = [];
+            if (q.questionId) queryConditions.push({ questionId: q.questionId });
+            if (q.slug) queryConditions.push({ slug: q.slug });
+            if (q.title) queryConditions.push({ title: q.title });
+
+            const existing = queryConditions.length > 0
+                ? await CodingQuestion.findOne({ $or: queryConditions })
+                : null;
+
+            if (existing) {
+                await CodingQuestion.updateOne(
+                    { _id: existing._id },
+                    { $set: q }
+                );
+            } else {
+                await CodingQuestion.create(q);
+            }
             upsertedCount++;
         }
 
