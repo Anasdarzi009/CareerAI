@@ -20,6 +20,8 @@ dist/
 dist-ssr/
 build/
 Frontend/dist/
+.cache/
+**/.cache/
 
 # Uploaded Resumes, Candidate Documents & Generated Files
 Backend/uploads/resumes/*

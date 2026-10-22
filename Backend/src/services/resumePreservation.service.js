@@ -5,6 +5,7 @@ const AdmZip = require("adm-zip");
 const pdfParse = require("pdf-parse");
 const mammoth = require("mammoth");
 const puppeteer = require("puppeteer");
+const { getPuppeteerLaunchOptions } = require("../utils/puppeteerHelper");
 
 const apiKey = process.env.GOOGLE_GENAI_API_KEY;
 if (!apiKey) {
@@ -333,19 +334,20 @@ async function renderMasterStyledPdf(data) {
 </body>
 </html>`;
 
-    const browser = await puppeteer.launch({
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu']
-    });
-    const page = await browser.newPage();
-    await page.setContent(html, { waitUntil: "networkidle0" });
-    const pdfBuffer = await page.pdf({
-        format: "A4",
-        margin: { top: "10mm", bottom: "10mm", left: "12mm", right: "12mm" },
-        printBackground: true
-    });
-    await browser.close();
-
-    return pdfBuffer;
+    const launchOptions = getPuppeteerLaunchOptions();
+    const browser = await puppeteer.launch(launchOptions);
+    try {
+        const page = await browser.newPage();
+        await page.setContent(html, { waitUntil: "networkidle0" });
+        const pdfBuffer = await page.pdf({
+            format: "A4",
+            margin: { top: "10mm", bottom: "10mm", left: "12mm", right: "12mm" },
+            printBackground: true
+        });
+        return Buffer.from(pdfBuffer);
+    } finally {
+        await browser.close();
+    }
 }
 
 /**

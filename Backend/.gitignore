@@ -10,3 +10,5 @@
 /uploads/*.docx
 /scratch
 .DS_Store
+/.cache
+.cache/
