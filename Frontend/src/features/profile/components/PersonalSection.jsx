@@ -16,28 +16,49 @@ const CheckIcon = () => (
 const GENDER_OPTIONS = ['Male', 'Female', 'Prefer not to say']
 
 export const PersonalSection = ({ personal = {}, userMeta = {}, onSave, saving }) => {
-    const [fullName, setFullName] = useState(personal.fullName || '')
-    const [phoneNumber, setPhoneNumber] = useState(personal.phoneNumber || '')
-    const [location, setLocation] = useState(personal.location || '')
-    const [headline, setHeadline] = useState(personal.headline || '')
+    const [fullName, setFullName] = useState(personal?.fullName || userMeta?.username || '')
+    const [phoneNumber, setPhoneNumber] = useState(personal?.phoneNumber || '')
+    const [location, setLocation] = useState(personal?.location || '')
+    const [headline, setHeadline] = useState(personal?.headline || '')
+    const [savedSuccess, setSavedSuccess] = useState(false)
 
     useEffect(() => {
-        setFullName(personal.fullName || userMeta.username || '')
-        setPhoneNumber(personal.phoneNumber || '')
-        setLocation(personal.location || '')
-        setHeadline(personal.headline || '')
-    }, [personal, userMeta])
+        if (personal?.fullName !== undefined || userMeta?.username !== undefined) {
+            setFullName(personal?.fullName || userMeta?.username || '')
+        }
+        if (personal?.phoneNumber !== undefined) {
+            setPhoneNumber(personal?.phoneNumber || '')
+        }
+        if (personal?.location !== undefined) {
+            setLocation(personal?.location || '')
+        }
+        if (personal?.headline !== undefined) {
+            setHeadline(personal?.headline || '')
+        }
+    }, [
+        personal?.fullName,
+        personal?.phoneNumber,
+        personal?.location,
+        personal?.headline,
+        userMeta?.username
+    ])
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        onSave({
-            personal: {
-                fullName: fullName.trim(),
-                phoneNumber: phoneNumber.trim(),
-                location: location.trim(),
-                headline: headline.trim()
-            }
-        })
+        try {
+            await onSave({
+                personal: {
+                    fullName: fullName.trim(),
+                    phoneNumber: phoneNumber.trim(),
+                    location: location.trim(),
+                    headline: headline.trim()
+                }
+            })
+            setSavedSuccess(true)
+            setTimeout(() => setSavedSuccess(false), 3500)
+        } catch {
+            // Error handled by parent hook, preserve entered values in state
+        }
     }
 
     return (
@@ -130,14 +151,20 @@ export const PersonalSection = ({ personal = {}, userMeta = {}, onSave, saving }
                     </div>
                 </div>
 
-                <div className="section-card-footer">
+                <div className="section-card-footer" style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
                     <button
                         type="submit"
+                        id="save-personal-btn"
                         className="button primary-button"
                         disabled={saving}
                     >
                         <span>{saving ? 'Saving...' : 'Save Personal Details'}</span>
                     </button>
+                    {savedSuccess && (
+                        <span style={{ color: '#34d399', fontSize: 'var(--text-sm)', display: 'inline-flex', alignItems: 'center', gap: '0.35rem', fontWeight: 500 }}>
+                            <CheckIcon /> Personal details saved successfully
+                        </span>
+                    )}
                 </div>
             </div>
         </form>

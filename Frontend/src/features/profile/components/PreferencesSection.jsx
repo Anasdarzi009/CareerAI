@@ -1,34 +1,53 @@
 import React, { useState, useEffect } from 'react'
 
+const CheckIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="20 6 9 17 4 12" />
+    </svg>
+)
+
 const WORK_MODES = ['Any', 'Hybrid', 'Remote', 'On-site']
 const EXPERIENCE_LEVELS = ['Fresher', 'Entry Level', 'Mid Level', 'Experienced']
 
 export const PreferencesSection = ({ preferences = {}, onSave, saving }) => {
-    const [targetRole, setTargetRole] = useState(preferences.targetRole || '')
-    const [preferredIndustry, setPreferredIndustry] = useState(preferences.preferredIndustry || '')
-    const [preferredLocation, setPreferredLocation] = useState(preferences.preferredLocation || '')
-    const [workMode, setWorkMode] = useState(preferences.workMode || 'Any')
-    const [experienceLevel, setExperienceLevel] = useState(preferences.experienceLevel || 'Fresher')
+    const [targetRole, setTargetRole] = useState(preferences?.targetRole || '')
+    const [preferredIndustry, setPreferredIndustry] = useState(preferences?.preferredIndustry || '')
+    const [preferredLocation, setPreferredLocation] = useState(preferences?.preferredLocation || '')
+    const [workMode, setWorkMode] = useState(preferences?.workMode || 'Any')
+    const [experienceLevel, setExperienceLevel] = useState(preferences?.experienceLevel || 'Fresher')
+    const [savedSuccess, setSavedSuccess] = useState(false)
 
     useEffect(() => {
-        setTargetRole(preferences.targetRole || '')
-        setPreferredIndustry(preferences.preferredIndustry || '')
-        setPreferredLocation(preferences.preferredLocation || '')
-        setWorkMode(preferences.workMode || 'Any')
-        setExperienceLevel(preferences.experienceLevel || 'Fresher')
-    }, [preferences])
+        if (preferences?.targetRole !== undefined) setTargetRole(preferences.targetRole || '')
+        if (preferences?.preferredIndustry !== undefined) setPreferredIndustry(preferences.preferredIndustry || '')
+        if (preferences?.preferredLocation !== undefined) setPreferredLocation(preferences.preferredLocation || '')
+        if (preferences?.workMode !== undefined) setWorkMode(preferences.workMode || 'Any')
+        if (preferences?.experienceLevel !== undefined) setExperienceLevel(preferences.experienceLevel || 'Fresher')
+    }, [
+        preferences?.targetRole,
+        preferences?.preferredIndustry,
+        preferences?.preferredLocation,
+        preferences?.workMode,
+        preferences?.experienceLevel
+    ])
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        onSave({
-            careerPreferences: {
-                targetRole: targetRole.trim(),
-                preferredIndustry: preferredIndustry.trim(),
-                preferredLocation: preferredLocation.trim(),
-                workMode,
-                experienceLevel
-            }
-        })
+        try {
+            await onSave({
+                careerPreferences: {
+                    targetRole: targetRole.trim(),
+                    preferredIndustry: preferredIndustry.trim(),
+                    preferredLocation: preferredLocation.trim(),
+                    workMode,
+                    experienceLevel
+                }
+            })
+            setSavedSuccess(true)
+            setTimeout(() => setSavedSuccess(false), 3500)
+        } catch {
+            // Error handled by parent hook, preserve entered values in state
+        }
     }
 
     return (
@@ -123,14 +142,20 @@ export const PreferencesSection = ({ preferences = {}, onSave, saving }) => {
                     </div>
                 </div>
 
-                <div className="section-card-footer">
+                <div className="section-card-footer" style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
                     <button
                         type="submit"
+                        id="save-preferences-btn"
                         className="button primary-button"
                         disabled={saving}
                     >
                         <span>{saving ? 'Saving...' : 'Save Career Preferences'}</span>
                     </button>
+                    {savedSuccess && (
+                        <span style={{ color: '#34d399', fontSize: 'var(--text-sm)', display: 'inline-flex', alignItems: 'center', gap: '0.35rem', fontWeight: 500 }}>
+                            <CheckIcon /> Preferences saved successfully
+                        </span>
+                    )}
                 </div>
             </div>
         </form>

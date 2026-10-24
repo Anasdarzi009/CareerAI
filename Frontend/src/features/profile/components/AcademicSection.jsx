@@ -8,6 +8,12 @@ const InfoIcon = () => (
     </svg>
 )
 
+const CheckIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="20 6 9 17 4 12" />
+    </svg>
+)
+
 export const AcademicSection = ({ academics = {}, onSave, saving }) => {
     // 10th / SSC
     const [sscPercentage, setSscPercentage] = useState(academics.ssc?.percentage ?? '')
@@ -40,33 +46,33 @@ export const AcademicSection = ({ academics = {}, onSave, saving }) => {
     const [pgCollege, setPgCollege] = useState(academics.postgraduate?.college ?? '')
     const [pgScore, setPgScore] = useState(academics.postgraduate?.cgpaOrPercentage ?? '')
     const [pgYear, setPgYear] = useState(academics.postgraduate?.passingYear ?? '')
-
+    const [savedSuccess, setSavedSuccess] = useState(false)
     const [formError, setFormError] = useState('')
 
     useEffect(() => {
-        setSscPercentage(academics.ssc?.percentage ?? '')
-        setSscYear(academics.ssc?.passingYear ?? '')
-        setSscBoard(academics.ssc?.board ?? '')
+        setSscPercentage(academics?.ssc?.percentage ?? '')
+        setSscYear(academics?.ssc?.passingYear ?? '')
+        setSscBoard(academics?.ssc?.board ?? '')
 
-        setHscPercentage(academics.hsc?.percentage ?? '')
-        setHscYear(academics.hsc?.passingYear ?? '')
-        setHscStream(academics.hsc?.stream ?? '')
-        setHscBoard(academics.hsc?.board ?? '')
+        setHscPercentage(academics?.hsc?.percentage ?? '')
+        setHscYear(academics?.hsc?.passingYear ?? '')
+        setHscStream(academics?.hsc?.stream ?? '')
+        setHscBoard(academics?.hsc?.board ?? '')
 
-        if (academics.diploma?.percentageOrCgpa) {
+        if (academics?.diploma?.percentageOrCgpa) {
             setHasDiploma(true)
             setDiplomaScore(academics.diploma.percentageOrCgpa)
             setDiplomaYear(academics.diploma.passingYear ?? '')
             setDiplomaSpecialization(academics.diploma.specialization ?? '')
         }
 
-        setUgDegree(academics.undergraduate?.degree ?? '')
-        setUgBranch(academics.undergraduate?.branch ?? '')
-        setUgCollege(academics.undergraduate?.college ?? '')
-        setUgScore(academics.undergraduate?.cgpaOrPercentage ?? '')
-        setUgYear(academics.undergraduate?.passingYear ?? '')
+        setUgDegree(academics?.undergraduate?.degree ?? '')
+        setUgBranch(academics?.undergraduate?.branch ?? '')
+        setUgCollege(academics?.undergraduate?.college ?? '')
+        setUgScore(academics?.undergraduate?.cgpaOrPercentage ?? '')
+        setUgYear(academics?.undergraduate?.passingYear ?? '')
 
-        if (academics.postgraduate?.degree) {
+        if (academics?.postgraduate?.degree) {
             setHasPg(true)
             setPgDegree(academics.postgraduate.degree)
             setPgSpec(academics.postgraduate.specialization ?? '')
@@ -74,9 +80,30 @@ export const AcademicSection = ({ academics = {}, onSave, saving }) => {
             setPgScore(academics.postgraduate.cgpaOrPercentage ?? '')
             setPgYear(academics.postgraduate.passingYear ?? '')
         }
-    }, [academics])
+    }, [
+        academics?.ssc?.percentage,
+        academics?.ssc?.passingYear,
+        academics?.ssc?.board,
+        academics?.hsc?.percentage,
+        academics?.hsc?.passingYear,
+        academics?.hsc?.stream,
+        academics?.hsc?.board,
+        academics?.diploma?.percentageOrCgpa,
+        academics?.diploma?.passingYear,
+        academics?.diploma?.specialization,
+        academics?.undergraduate?.degree,
+        academics?.undergraduate?.branch,
+        academics?.undergraduate?.college,
+        academics?.undergraduate?.cgpaOrPercentage,
+        academics?.undergraduate?.passingYear,
+        academics?.postgraduate?.degree,
+        academics?.postgraduate?.specialization,
+        academics?.postgraduate?.college,
+        academics?.postgraduate?.cgpaOrPercentage,
+        academics?.postgraduate?.passingYear
+    ])
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
         setFormError('')
 
@@ -105,40 +132,46 @@ export const AcademicSection = ({ academics = {}, onSave, saving }) => {
             }
         }
 
-        onSave({
-            academics: {
-                ssc: {
-                    percentage: sscPercentage !== '' ? Number(sscPercentage) : null,
-                    passingYear: sscYear !== '' ? Number(sscYear) : null,
-                    board: sscBoard.trim()
-                },
-                hsc: {
-                    percentage: hscPercentage !== '' ? Number(hscPercentage) : null,
-                    passingYear: hscYear !== '' ? Number(hscYear) : null,
-                    stream: hscStream.trim(),
-                    board: hscBoard.trim()
-                },
-                diploma: hasDiploma ? {
-                    percentageOrCgpa: diplomaScore !== '' ? Number(diplomaScore) : null,
-                    passingYear: diplomaYear !== '' ? Number(diplomaYear) : null,
-                    specialization: diplomaSpecialization.trim()
-                } : { percentageOrCgpa: null, passingYear: null, specialization: '' },
-                undergraduate: {
-                    degree: ugDegree.trim(),
-                    branch: ugBranch.trim(),
-                    college: ugCollege.trim(),
-                    cgpaOrPercentage: ugScore !== '' ? Number(ugScore) : null,
-                    passingYear: ugYear !== '' ? Number(ugYear) : null
-                },
-                postgraduate: hasPg ? {
-                    degree: pgDegree.trim(),
-                    specialization: pgSpec.trim(),
-                    college: pgCollege.trim(),
-                    cgpaOrPercentage: pgScore !== '' ? Number(pgScore) : null,
-                    passingYear: pgYear !== '' ? Number(pgYear) : null
-                } : { degree: '', specialization: '', college: '', cgpaOrPercentage: null, passingYear: null }
-            }
-        })
+        try {
+            await onSave({
+                academics: {
+                    ssc: {
+                        percentage: sscPercentage !== '' ? Number(sscPercentage) : null,
+                        passingYear: sscYear !== '' ? Number(sscYear) : null,
+                        board: sscBoard.trim()
+                    },
+                    hsc: {
+                        percentage: hscPercentage !== '' ? Number(hscPercentage) : null,
+                        passingYear: hscYear !== '' ? Number(hscYear) : null,
+                        stream: hscStream.trim(),
+                        board: hscBoard.trim()
+                    },
+                    diploma: hasDiploma ? {
+                        percentageOrCgpa: diplomaScore !== '' ? Number(diplomaScore) : null,
+                        passingYear: diplomaYear !== '' ? Number(diplomaYear) : null,
+                        specialization: diplomaSpecialization.trim()
+                    } : { percentageOrCgpa: null, passingYear: null, specialization: '' },
+                    undergraduate: {
+                        degree: ugDegree.trim(),
+                        branch: ugBranch.trim(),
+                        college: ugCollege.trim(),
+                        cgpaOrPercentage: ugScore !== '' ? Number(ugScore) : null,
+                        passingYear: ugYear !== '' ? Number(ugYear) : null
+                    },
+                    postgraduate: hasPg ? {
+                        degree: pgDegree.trim(),
+                        specialization: pgSpec.trim(),
+                        college: pgCollege.trim(),
+                        cgpaOrPercentage: pgScore !== '' ? Number(pgScore) : null,
+                        passingYear: pgYear !== '' ? Number(pgYear) : null
+                    } : { degree: '', specialization: '', college: '', cgpaOrPercentage: null, passingYear: null }
+                }
+            })
+            setSavedSuccess(true)
+            setTimeout(() => setSavedSuccess(false), 3500)
+        } catch {
+            // Error handled by parent hook, preserve entered values in state
+        }
     }
 
     return (
@@ -461,14 +494,20 @@ export const AcademicSection = ({ academics = {}, onSave, saving }) => {
                     )}
                 </div>
 
-                <div className="section-card-footer">
+                <div className="section-card-footer" style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
                     <button
                         type="submit"
+                        id="save-academics-btn"
                         className="button primary-button"
                         disabled={saving}
                     >
                         <span>{saving ? 'Saving...' : 'Save Academic Details'}</span>
                     </button>
+                    {savedSuccess && (
+                        <span style={{ color: '#34d399', fontSize: 'var(--text-sm)', display: 'inline-flex', alignItems: 'center', gap: '0.35rem', fontWeight: 500 }}>
+                            <CheckIcon /> Academic details saved successfully
+                        </span>
+                    )}
                 </div>
             </div>
         </form>

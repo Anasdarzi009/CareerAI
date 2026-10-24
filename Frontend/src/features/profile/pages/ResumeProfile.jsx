@@ -85,7 +85,7 @@ export const ResumeProfile = () => {
                         key="sec-personal"
                         personal={profile?.personal}
                         userMeta={userMeta || profile?.user}
-                        onSave={(personalData) => handleUpdate({ personal: personalData })}
+                        onSave={(personalData) => handleUpdate(personalData?.personal !== undefined ? personalData : { personal: personalData })}
                         saving={saving}
                     />
                 )
@@ -94,7 +94,7 @@ export const ResumeProfile = () => {
                     <AcademicSection
                         key="sec-academics"
                         academics={profile?.academics}
-                        onSave={(academicData) => handleUpdate({ academics: academicData })}
+                        onSave={(academicData) => handleUpdate(academicData?.academics !== undefined ? academicData : { academics: academicData })}
                         saving={saving}
                     />
                 )
@@ -103,7 +103,7 @@ export const ResumeProfile = () => {
                     <SkillsSection
                         key="sec-skills"
                         skills={profile?.skills}
-                        onSave={(skillsData) => handleUpdate({ skills: skillsData })}
+                        onSave={(skillsData) => handleUpdate(skillsData?.skills !== undefined ? skillsData : { skills: skillsData })}
                         saving={saving}
                     />
                 )
@@ -112,7 +112,7 @@ export const ResumeProfile = () => {
                     <ExperienceSection
                         key="sec-experience"
                         experience={profile?.experience}
-                        onSave={(expData) => handleUpdate({ experience: expData })}
+                        onSave={(expData) => handleUpdate(expData?.experience !== undefined ? expData : { experience: expData })}
                         saving={saving}
                     />
                 )
@@ -121,7 +121,7 @@ export const ResumeProfile = () => {
                     <ProjectsSection
                         key="sec-projects"
                         projects={profile?.projects}
-                        onSave={(projData) => handleUpdate({ projects: projData })}
+                        onSave={(projData) => handleUpdate(projData?.projects !== undefined ? projData : { projects: projData })}
                         saving={saving}
                     />
                 )
@@ -140,7 +140,7 @@ export const ResumeProfile = () => {
                     <PreferencesSection
                         key="sec-preferences"
                         preferences={profile?.careerPreferences}
-                        onSave={(prefData) => handleUpdate({ careerPreferences: prefData })}
+                        onSave={(prefData) => handleUpdate(prefData?.careerPreferences !== undefined ? prefData : { careerPreferences: prefData })}
                         saving={saving}
                     />
                 )
